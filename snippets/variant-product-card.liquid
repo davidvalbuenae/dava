@@ -1,17 +1,35 @@
+{% assign variant_url = product.url | append: '?variant=' | append: variant.id %}
 {% assign featured_image = variant.featured_image | default: product.featured_image %}
 
-<a href="{{ product.url }}?variant={{ variant.id }}" class="product-card-link">
+{% capture children %}
+  <a
+    href="{{ variant_url }}"
+    class="product-card__link"
+    ref="productCardLink"
+  >
+    <span class="visually-hidden">
+      {{ product.title }} - {{ variant.title }}
+    </span>
+  </a>
+
   <div class="card-media">
-    <img 
-      src="{{ featured_image | img_url: '600x' }}" 
-      alt="{{ product.title }} - {{ variant.title }}" 
+    <img
+      src="{{ featured_image | image_url: width: 600 }}"
+      alt="{{ product.title }} - {{ variant.title }}"
       loading="lazy"
     >
   </div>
+
   <div class="card-info">
     <h3 class="product-title">{{ product.title }} - {{ variant.title }}</h3>
     <p class="product-price">
       {{ variant.price | money }}
     </p>
   </div>
-</a>
+{% endcapture %}
+
+{% render 'product-card',
+  product: product,
+  children: children,
+  product_card_gap: 12
+%}

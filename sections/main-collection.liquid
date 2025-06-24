@@ -71,17 +71,22 @@
     {% else %}
       {% paginate collection.products by 24 %}
         {% capture children %}
+          {% assign rendered_colors = '' %}
           {% for product in collection.products %}
             {% for variant in product.variants %}
-              <li
-                id="{{ section.id }}-{{ variant.id }}"
-                class="product-grid__item"
-                data-page="{{ paginate.current_page }}"
-                data-product-id="{{ product.id }}"
-                ref="cards[]"
-              >
-                {% render 'variant-product-card', product: product, variant: variant %}
-              </li>
+              {% assign color = variant.option1 | downcase | strip %}
+              {% unless rendered_colors contains color %}
+                <li
+                  id="{{ section.id }}-{{ variant.id }}"
+                  class="product-grid__item"
+                  data-page="{{ paginate.current_page }}"
+                  data-product-id="{{ product.id }}"
+                  ref="cards[]"
+                >
+                  {% render 'variant-product-card', product: product, variant: variant %}
+                </li>
+                {% assign rendered_colors = rendered_colors | append: color | append: ',' %}
+              {% endunless %}
             {% endfor %}
           {% endfor %}
         {% endcapture %}
