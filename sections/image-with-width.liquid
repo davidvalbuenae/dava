@@ -1,0 +1,40 @@
+<!-- sections/image-with-width.liquid -->
+<div class="custom-image-wrapper" style="text-align: center;">
+  {% if section.settings.image %}
+    <img
+      src="{{ section.settings.image | img_url: 'master' }}"
+      alt="{{ section.settings.image.alt | escape }}"
+      style="width: {{ section.settings.image_width }}%; max-width: 100%;"
+    >
+  {% else %}
+    <p>No has seleccionado una imagen.</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Imagen ajustable",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Selecciona la imagen"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Ancho de la imagen (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Imagen ajustable",
+      "category": "Personalizado"
+    }
+  ]
+}
+{% endschema %}
